@@ -990,35 +990,104 @@ input:checked + .toggle-slider::before { transform:translateX(22px); }
   margin-left: 2px;
 }
 
-/* AI Modal fixes */
-#modal-ai-program {
-  z-index: 400 !important;
-}
-#modal-ai-program .modal {
-  pointer-events: all !important;
-  position: relative;
-  z-index: 401 !important;
-}
-#modal-ai-program .modal * {
-  pointer-events: all !important;
-}
+/* ===== AI PROGRAM GENERATOR ===== */
+.ai-modal-wrap { padding:0; }
 .ai-chip {
-  cursor: pointer !important;
-  pointer-events: all !important;
-  -webkit-tap-highlight-color: rgba(108,99,255,0.3);
-  user-select: none;
+  display:inline-flex; align-items:center;
+  padding:6px 14px; border-radius:20px;
+  font-size:12px; font-weight:600;
+  background:var(--card); border:1px solid var(--border);
+  color:var(--text2); cursor:pointer;
+  transition:var(--transition); white-space:nowrap;
+  user-select:none; -webkit-tap-highlight-color:rgba(108,99,255,0.2);
 }
-.ai-generate-btn {
-  pointer-events: all !important;
-  cursor: pointer !important;
+.ai-chip.selected, .ai-chip:active {
+  background:var(--accent); border-color:var(--accent); color:#fff;
 }
-#ai-advanced-toggle {
-  pointer-events: all !important;
-  cursor: pointer !important;
+.ai-quick-chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.ai-input-area {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:14px; margin-bottom:10px;
 }
-#ai-user-prompt {
-  pointer-events: all !important;
+.ai-input-area textarea {
+  width:100%; background:transparent; border:none;
+  color:var(--text); font-family:var(--font-body);
+  font-size:16px; resize:none; min-height:80px; outline:none;
 }
+.ai-input-area textarea::placeholder { color:var(--text3); }
+.ai-char-count { font-size:11px; color:var(--text3); text-align:right; margin-top:4px; }
+.ai-adv-toggle {
+  font-size:12px; color:var(--text3); text-align:center;
+  cursor:pointer; padding:8px; margin-bottom:6px;
+  text-decoration:underline; display:block;
+}
+.ai-adv-panel {
+  display:none; background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:12px; margin-bottom:10px;
+}
+.ai-adv-panel.open { display:block; }
+.ai-gen-btn {
+  width:100%; padding:16px; border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--accent),#8b85ff);
+  color:#fff; font-family:var(--font-display); font-size:26px;
+  letter-spacing:1px; border:none; cursor:pointer;
+  box-shadow:0 4px 20px rgba(108,99,255,0.4);
+  margin-top:4px; display:block;
+}
+.ai-gen-btn:active { opacity:0.85; transform:scale(0.98); }
+.ai-spinner-wrap {
+  display:none; text-align:center; padding:40px 16px;
+}
+.ai-spinner-wrap.show { display:block; }
+.ai-spinner {
+  width:48px; height:48px; border:3px solid var(--border);
+  border-top-color:var(--accent); border-radius:50%;
+  animation:ai-spin 0.8s linear infinite; margin:0 auto 16px;
+}
+@keyframes ai-spin { to { transform:rotate(360deg); } }
+.ai-spinner-msg { font-size:16px; font-weight:600; color:var(--text); margin-bottom:6px; }
+.ai-spinner-sub { font-size:13px; color:var(--text2); }
+.ai-result-wrap { display:none; }
+.ai-result-wrap.show { display:block; }
+.ai-result-head {
+  background:linear-gradient(135deg,var(--accent-dim),transparent);
+  border:1px solid var(--accent); border-radius:var(--radius);
+  padding:16px; margin-bottom:12px; display:flex; align-items:center; gap:12px;
+}
+.ai-result-head h2 { font-family:var(--font-display); font-size:24px; margin-bottom:4px; }
+.ai-result-head p { font-size:13px; color:var(--text2); }
+.ai-result-meta { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.ai-ex-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:12px 14px;
+  margin-bottom:8px; border-left:3px solid var(--accent);
+}
+.ai-ex-card-head { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.ai-ex-num {
+  width:24px; height:24px; border-radius:50%;
+  background:var(--accent-dim); color:var(--accent2);
+  font-size:11px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.ai-ex-name { font-weight:700; font-size:15px; flex:1; }
+.ai-ex-details { display:flex; gap:6px; flex-wrap:wrap; padding-left:34px; }
+.ai-ex-det {
+  font-size:12px; color:var(--text2);
+  background:var(--bg3); padding:3px 8px; border-radius:6px;
+}
+.ai-ex-note { font-size:12px; color:var(--text3); padding-left:34px; margin-top:4px; font-style:italic; }
+.ai-tip {
+  background:var(--yellow-dim); border:1px solid var(--yellow);
+  border-radius:var(--radius-sm); padding:12px; margin-bottom:12px;
+  font-size:13px;
+}
+.ai-error-box {
+  display:none; background:var(--red-dim); border:1px solid var(--red);
+  border-radius:var(--radius-sm); padding:14px;
+  color:var(--text); font-size:14px; text-align:center; margin-bottom:10px;
+}
+.ai-error-box.show { display:block; }
+.ai-action-btns { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
 
 </style>
 </style>
@@ -1135,7 +1204,7 @@ input:checked + .toggle-slider::before { transform:translateX(22px); }
       <button class="btn btn-ghost" id="btn-home-quick-log">
         📝 <span id="t-quick-log">Hızlı Log</span>
       </button>
-      <button class="btn" id="btn-ai-gen" style="background:linear-gradient(135deg,#6c63ff,#8b85ff);color:#fff;box-shadow:0 4px 20px rgba(108,99,255,0.4);margin-top:8px" onclick="openAiProgramModal()">
+      <button class="btn" id="ai-open-btn" style="background:linear-gradient(135deg,#6c63ff,#8b85ff);color:#fff;box-shadow:0 4px 20px rgba(108,99,255,0.4);margin-top:8px">
         🤖 <span>AI ile Program Oluştur</span>
       </button>
     </div>
@@ -2297,14 +2366,6 @@ document.querySelectorAll('.modal-backdrop').forEach(bd=>{
   bd.addEventListener('click', e => {
     if (e.target===bd) closeAllModals();
   });
-});
-// AI modal backdrop close
-document.addEventListener('click', function(e) {
-  const aiModal = document.getElementById('modal-ai-program');
-  if (aiModal && e.target === aiModal) {
-    aiModal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
 });
 
 function showScreen(id) {
@@ -4517,336 +4578,326 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register(swUrl).catch(()=>{});
 }
 
-/* ============================================================
-   AI PROGRAM GENERATOR ENGINE — Groq via Cloudflare Worker
-============================================================ */
+/* ===== AI PROGRAM GENERATOR ===== */
+(function() {
+  const WORKER = 'https://workout-coach.ibrahimkayracetin2008.workers.dev';
 
-// ⚠️ Bunu kendi Worker URL'inle değiştir!
-const AI_WORKER_URL = 'https://workout-coach.ibrahimkayracetin2008.workers.dev';
+  let aiProgram = null;
+  let lastPrompt = '';
+  let loadInterval = null;
 
-// Quick chips
-// AI chip delegated event listener
-document.addEventListener('click', function(e) {
-  const chip = e.target.closest('.ai-chip');
-  if (!chip) return;
-  document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
-  chip.classList.add('selected');
-  const ta = document.getElementById('ai-user-prompt');
-  if (ta) { ta.value = chip.dataset.text || ''; updateAiCharCount(); }
-});
+  const LOAD_MSGS = [
+    ['Program oluşturuluyor...','Kaslarını analiz ediyorum 💪'],
+    ['Egzersizler seçiliyor...','En iyi kombinasyonu buluyorum 🎯'],
+    ['Setler ayarlanıyor...','Sana özel düzenliyorum ⚡'],
+    ['Neredeyse hazır...','Son dokunuşlar yapılıyor ✨'],
+  ];
 
-document.getElementById('ai-user-prompt').addEventListener('input', () => {
-  updateAiCharCount();
-  document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
-});
+  function show(phase) {
+    const inp = document.getElementById('ai-input-wrap');
+    const load = document.getElementById('ai-loading-wrap');
+    const res = document.getElementById('ai-result-wrap');
+    const err = document.getElementById('ai-err-box');
+    if (inp) inp.style.display = phase==='input' ? 'block' : 'none';
+    if (load) load.classList.toggle('show', phase==='loading');
+    if (res) res.classList.toggle('show', phase==='result');
+    if (err) err.classList.toggle('show', phase==='error');
+  }
 
-function updateAiCharCount() {
-  const val = document.getElementById('ai-user-prompt').value;
-  const count = val.length;
-  document.getElementById('ai-char-count').textContent = `${count} / 300`;
-  if (count > 300) document.getElementById('ai-user-prompt').value = val.slice(0, 300);
-}
+  function openModal() {
+    show('input');
+    const ta = document.getElementById('ai-prompt-input');
+    if (ta) ta.value = '';
+    document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
+    updateCount();
+    document.getElementById('modal-ai-program').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 
-document.addEventListener('click', function(e) {
-  if (e.target.id !== 'ai-advanced-toggle' && !e.target.closest('#ai-advanced-toggle')) return;
-  const panel = document.getElementById('ai-advanced-panel');
-  if (!panel) return;
-  panel.classList.toggle('open');
-  const tog = document.getElementById('ai-advanced-toggle');
-  if (tog) tog.textContent = panel.classList.contains('open') ? '⬆️ Gelişmiş seçenekleri gizle' : '⚙️ Gelişmiş seçenekler';
-});
-
-const AI_LOADING_MSGS = [
-  ['Program oluşturuluyor...', 'Kaslarını analiz ediyorum 💪'],
-  ['Egzersizler seçiliyor...', 'En iyi kombinasyonu buluyorum 🎯'],
-  ['Setler ayarlanıyor...', 'Sana özel düzenliyorum ⚡'],
-  ['Neredeyse hazır...', 'Son dokunuşlar yapılıyor ✨'],
-];
-
-let aiLoadingInterval = null;
-function startLoadingAnimation() {
-  let i = 0;
-  const msgEl = document.getElementById('ai-loading-msg');
-  const subEl = document.getElementById('ai-loading-sub');
-  msgEl.textContent = AI_LOADING_MSGS[0][0];
-  subEl.textContent = AI_LOADING_MSGS[0][1];
-  aiLoadingInterval = setInterval(() => {
-    i = (i + 1) % AI_LOADING_MSGS.length;
-    msgEl.textContent = AI_LOADING_MSGS[i][0];
-    subEl.textContent = AI_LOADING_MSGS[i][1];
-  }, 1800);
-}
-function stopLoadingAnimation() { clearInterval(aiLoadingInterval); }
-
-function showAiPhase(phase) {
-  document.getElementById('ai-phase-input').style.display = phase === 'input' ? 'block' : 'none';
-  document.getElementById('ai-phase-loading').classList.toggle('active', phase === 'loading');
-  document.getElementById('ai-phase-result').classList.toggle('active', phase === 'result');
-  document.getElementById('ai-error').classList.toggle('active', phase === 'error');
-}
-
-let generatedProgram = null;
-let lastPrompt = '';
-
-document.addEventListener('click', function(e) {
-  if (e.target.id === 'btn-ai-generate' || e.target.closest('#btn-ai-generate')) generateAiProgram();
-  if (e.target.id === 'btn-ai-regenerate' || e.target.closest('#btn-ai-regenerate')) generateAiProgram(true);
-  if (e.target.id === 'btn-ai-back' || e.target.closest('#btn-ai-back')) showAiPhase('input');
-  if (e.target.id === 'btn-ai-save-start' || e.target.closest('#btn-ai-save-start')) {
-    if (!generatedProgram) return;
-    const saved = saveGeneratedProgram();
+  function closeAiModal() {
     document.getElementById('modal-ai-program').classList.remove('active');
-    showAiPhase('input');
-    setTimeout(() => startWorkout(saved), 200);
-  }
-  if (e.target.id === 'btn-ai-save-only' || e.target.closest('#btn-ai-save-only')) {
-    if (!generatedProgram) return;
-    saveGeneratedProgram();
-    document.getElementById('modal-ai-program').classList.remove('active');
-    showAiPhase('input');
-    showScreen('programs');
-    renderPrograms();
-    showToast('✅ Program kaydedildi');
-  }
-});
-
-async function generateAiProgram(isRegen = false) {
-  const userText = document.getElementById('ai-user-prompt').value.trim();
-  if (!userText && !isRegen) {
-    showToast('❌ Ne yapmak istediğini yaz veya bir chip seç', 'error');
-    return;
+    document.body.style.overflow = '';
   }
 
-  const prompt = isRegen ? lastPrompt : buildAiPrompt(userText);
-  lastPrompt = prompt;
-
-  showAiPhase('loading');
-  startLoadingAnimation();
-
-  try {
-    const response = await fetch(AI_WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
-    });
-
-    if (!response.ok) throw new Error(`Worker hatası: ${response.status}`);
-
-    const data = await response.json();
-    if (data.error) throw new Error(data.error);
-
-    const text = data.result || '';
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('JSON parse hatası');
-
-    const prog = JSON.parse(jsonMatch[0]);
-    if (!prog.exercises?.length) throw new Error('Egzersiz listesi boş');
-
-    generatedProgram = prog;
-    stopLoadingAnimation();
-    renderAiResult(prog);
-    showAiPhase('result');
-
-  } catch (err) {
-    stopLoadingAnimation();
-    let errMsg = 'Bir hata oluştu. Tekrar dene.';
-    if (err.message.includes('Worker URL')) errMsg = 'Worker URL ayarlanmamış.';
-    else if (err.message.includes('parse')) errMsg = 'AI yanıtı işlenemedi. Yeniden dene.';
-    else if (err.message.includes('fetch')) errMsg = 'Bağlantı hatası. İnternetini kontrol et.';
-    document.getElementById('ai-error-msg').textContent = errMsg;
-    showAiPhase('error');
-    setTimeout(() => showAiPhase('input'), 3000);
-    console.error('AI Gen error:', err);
+  function updateCount() {
+    const ta = document.getElementById('ai-prompt-input');
+    const ct = document.getElementById('ai-char-ct');
+    if (!ta || !ct) return;
+    const n = ta.value.length;
+    ct.textContent = n + ' / 300';
+    if (n > 300) ta.value = ta.value.slice(0, 300);
   }
-}
 
-function buildAiPrompt(userText) {
-  const profile = Storage.get('profile', {});
-  const prs = Storage.get('prs', {});
-  const duration = document.getElementById('ai-opt-duration').value;
-  const level = document.getElementById('ai-opt-level').value;
-  const equipment = document.getElementById('ai-opt-equipment').value;
-  const sets = document.getElementById('ai-opt-sets').value;
-  const note = document.getElementById('ai-opt-note').value;
+  function buildPrompt(txt) {
+    const profile = Storage.get('profile', {});
+    const prs = Storage.get('prs', {});
+    const dur = (document.getElementById('ai-dur')||{}).value || '60';
+    const lvl = (document.getElementById('ai-lvl')||{}).value || 'orta';
+    const eq = (document.getElementById('ai-equip')||{}).value || 'spor salonu';
+    const sets = (document.getElementById('ai-sets')||{}).value || '4';
+    const note = (document.getElementById('ai-note')||{}).value || '';
+    const prStr = Object.keys(prs).length
+      ? Object.entries(prs).slice(0,5).map(([n,p])=>n+' '+p.weight+'kg').join(', ')
+      : '';
+    const profStr = profile.weight ? profile.weight+'kg ' + (profile.height||'')+'cm ' + (profile.age||'')+'yaş' : '';
 
-  const prInfo = Object.keys(prs).length
-    ? `Kullanıcının PR'ları: ${Object.entries(prs).slice(0,5).map(([n,p])=>`${n} ${p.weight}kg`).join(', ')}`
-    : '';
-  const profileInfo = profile.weight
-    ? `Kullanıcı: ${profile.weight}kg, ${profile.height||'?'}cm, ${profile.age||'?'} yaş`
-    : '';
+    return `Sen bir fitness antrenörüsün. Kullanıcı isteğine göre antrenman programı oluştur.
 
-  return `Sen bir fitness antrenörüsün. Kullanıcının isteğine göre antrenman programı oluştur.
+İstek: "${txt}"
+${profStr ? 'Profil: '+profStr : ''}
+${prStr ? "PR'lar: "+prStr : ''}
+Süre: ${dur} dk | Seviye: ${lvl} | Ekipman: ${eq} | Set: ${sets}
+${note ? 'Not: '+note : ''}
 
-Kullanıcı isteği: "${userText}"
-${profileInfo}
-${prInfo}
-Süre: ${duration} dakika | Seviye: ${level} | Ekipman: ${equipment} | Set tercihi: ${sets}
-${note ? `Not: ${note}` : ''}
-
-SADECE aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
-
-{
-  "name": "Program adı (kısa Türkçe, max 30 karakter)",
-  "icon": "tek emoji",
-  "desc": "1-2 cümle açıklama",
-  "durationMin": rakam,
-  "level": "Başlangıç/Orta/İleri",
-  "tip": "Kısa hoca notu (boş string olabilir)",
-  "exercises": [
-    {
-      "name": "Bench Press",
-      "category": "Göğüs",
-      "sets": 4,
-      "reps": 10,
-      "weight": 60,
-      "rest": 90,
-      "notes": "Form ipucu",
-      "warmup": false,
-      "superset": false
-    }
-  ]
-}
+SADECE şu JSON formatında yanıt ver, başka hiçbir şey yazma:
+{"name":"Program adı max 30 karakter","icon":"emoji","desc":"1-2 cümle","durationMin":60,"level":"Orta","tip":"kısa ipucu veya boş string","exercises":[{"name":"Bench Press","category":"Göğüs","sets":4,"reps":10,"weight":60,"rest":90,"notes":"form ipucu","warmup":false,"superset":false}]}
 
 Kurallar:
-- 6-10 egzersiz olsun
+- 6-10 egzersiz
 - İlk egzersiz warmup:true olsun
 - category: Göğüs/Sırt/Bacak/Omuz/Kol/Core/Kardiyo/Diğer
-- weight: kg (0 = vücut ağırlığı)
+- weight: kg cinsinden (0=vücut ağırlığı)
 - rest: saniye (45-120)
-- Kullanıcı isteğine uygun kas gruplarına odaklan`;
-}
-
-function renderAiResult(prog) {
-  document.getElementById('ai-result-icon').textContent = prog.icon || '💪';
-  document.getElementById('ai-result-name').textContent = prog.name;
-  document.getElementById('ai-result-desc').textContent = prog.desc;
-
-  const meta = document.getElementById('ai-result-meta');
-  meta.innerHTML = `
-    <span class="chip chip-accent">⏱️ ~${prog.durationMin} dk</span>
-    <span class="chip chip-green">${prog.exercises.length} egzersiz</span>
-    <span class="chip chip-yellow">${prog.level || 'Orta'}</span>
-    <span class="chip" style="background:var(--cyan);color:#000;opacity:0.85">${prog.exercises.reduce((a,e)=>a+e.sets,0)} set</span>
-  `;
-
-  const list = document.getElementById('ai-exercises-list');
-  list.innerHTML = prog.exercises.map((ex, i) => `
-    <div class="ai-exercise-card">
-      <div class="ai-exercise-card-header">
-        <div class="ai-exercise-num">${i + 1}</div>
-        <div class="ai-exercise-name">${ex.name}</div>
-        ${ex.warmup ? '<span style="font-size:10px;background:var(--yellow-dim);color:var(--yellow);padding:2px 8px;border-radius:99px;font-weight:700">WU</span>' : ''}
-        ${ex.superset ? '<span style="font-size:10px;background:var(--cyan);color:#000;padding:2px 8px;border-radius:99px;font-weight:700">SS</span>' : ''}
-      </div>
-      <div class="ai-exercise-details">
-        <span class="ai-exercise-detail" style="background:var(--accent-dim);color:var(--accent2)">${ex.category}</span>
-        <span class="ai-exercise-detail">${ex.sets} × ${ex.reps} rep</span>
-        ${ex.weight ? `<span class="ai-exercise-detail">⚖️ ${ex.weight}kg</span>` : '<span class="ai-exercise-detail">🏃 Vücut</span>'}
-        <span class="ai-exercise-detail">😮‍💨 ${ex.rest}sn</span>
-      </div>
-      ${ex.notes ? `<div class="ai-exercise-note">💬 ${ex.notes}</div>` : ''}
-    </div>
-  `).join('');
-
-  if (prog.tip) {
-    document.getElementById('ai-tip-text').textContent = prog.tip;
-    document.getElementById('ai-tip-box').classList.remove('hidden');
-  } else {
-    document.getElementById('ai-tip-box').classList.add('hidden');
+- Kullanıcının istediği kas gruplarına odaklan`;
   }
-}
 
-document.getElementById('btn-ai-save-start').addEventListener('click', () => {
-  if (!generatedProgram) return;
-  const saved = saveGeneratedProgram();
-  closeModal('modal-ai-program');
-  showAiPhase('input');
-  setTimeout(() => startWorkout(saved), 200);
-});
+  async function generate(regen) {
+    const ta = document.getElementById('ai-prompt-input');
+    const txt = ta ? ta.value.trim() : '';
+    if (!txt && !regen) { showToast('❌ Bir şeyler yaz veya chip seç', 'error'); return; }
+    const prompt = regen ? lastPrompt : buildPrompt(txt);
+    lastPrompt = prompt;
 
-document.getElementById('btn-ai-save-only').addEventListener('click', () => {
-  if (!generatedProgram) return;
-  saveGeneratedProgram();
-  closeModal('modal-ai-program');
-  showAiPhase('input');
-  showScreen('programs');
-  renderPrograms();
-  showToast('✅ Program kaydedildi');
-});
+    show('loading');
+    let mi = 0;
+    loadInterval = setInterval(() => {
+      mi = (mi+1) % LOAD_MSGS.length;
+      const m = document.getElementById('ai-load-msg');
+      const s = document.getElementById('ai-load-sub');
+      if (m) m.textContent = LOAD_MSGS[mi][0];
+      if (s) s.textContent = LOAD_MSGS[mi][1];
+    }, 1800);
 
-function saveGeneratedProgram() {
-  const prog = {
-    id: 'ai-' + Date.now().toString(),
-    name: generatedProgram.name,
-    desc: generatedProgram.desc,
-    musicLink: '',
-    isTemplate: false,
-    exercises: generatedProgram.exercises,
-    aiGenerated: true,
-  };
-  const custom = Storage.get('programs', []);
-  custom.push(prog);
-  saveCustomPrograms(custom);
-  return prog;
-}
+    try {
+        const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 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'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: 1200,
+          temperature: 0.7
+        })
+      });
+      clearInterval(loadInterval);
+      if (!r.ok) throw new Error('Groq ' + r.status);
+      const data = await r.json();
+      const text = data.choices?.[0]?.message?.content || '';
+      const m = text.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error('JSON yok');
+      const prog = JSON.parse(m[0]);
+      if (!prog.exercises || !prog.exercises.length) throw new Error('Egzersiz boş');
+      aiProgram = prog;
+      renderResult(prog);
+      show('result');
+    } catch(e) {
+      clearInterval(loadInterval);
+      const errEl = document.getElementById('ai-err-txt');
+      if (errEl) errEl.textContent = e.message || 'Hata oluştu';
+      show('error');
+      setTimeout(() => show('input'), 3000);
+    }
+  }
 
-document.getElementById('btn-ai-regenerate').addEventListener('click', () => generateAiProgram(true));
-document.getElementById('btn-ai-back').addEventListener('click', () => showAiPhase('input'));
+  function renderResult(prog) {
+    const icon = document.getElementById('ai-res-icon');
+    const name = document.getElementById('ai-res-name');
+    const desc = document.getElementById('ai-res-desc');
+    const meta = document.getElementById('ai-res-meta');
+    const list = document.getElementById('ai-ex-list');
+    const tip = document.getElementById('ai-tip-box');
+    const tipTxt = document.getElementById('ai-tip-txt');
 
-function openAiProgramModal() {
-  showAiPhase('input');
-  document.getElementById('ai-user-prompt').value = '';
-  document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
-  updateAiCharCount();
-  // Direct open without body overflow lock to prevent pointer-events issues
-  const modalEl = document.getElementById('modal-ai-program');
-  modalEl.classList.add('active');
-}
+    if (icon) icon.textContent = prog.icon || '💪';
+    if (name) name.textContent = prog.name;
+    if (desc) desc.textContent = prog.desc;
+    if (meta) meta.innerHTML =
+      '<span class="chip chip-accent">⏱️ ~'+prog.durationMin+' dk</span>' +
+      '<span class="chip chip-green">'+prog.exercises.length+' egzersiz</span>' +
+      '<span class="chip chip-yellow">'+(prog.level||'Orta')+'</span>';
+    if (list) list.innerHTML = prog.exercises.map((ex,i) => `
+      <div class="ai-ex-card">
+        <div class="ai-ex-card-head">
+          <div class="ai-ex-num">${i+1}</div>
+          <div class="ai-ex-name">${ex.name}</div>
+          ${ex.warmup ? '<span style="font-size:10px;background:var(--yellow-dim);color:var(--yellow);padding:2px 8px;border-radius:99px;font-weight:700">WU</span>' : ''}
+        </div>
+        <div class="ai-ex-details">
+          <span class="ai-ex-det">${ex.category}</span>
+          <span class="ai-ex-det">${ex.sets}×${ex.reps}</span>
+          <span class="ai-ex-det">${ex.weight ? ex.weight+'kg' : 'Vücut'}</span>
+          <span class="ai-ex-det">${ex.rest}sn</span>
+        </div>
+        ${ex.notes ? '<div class="ai-ex-note">💬 '+ex.notes+'</div>' : ''}
+      </div>`).join('');
+    if (tip && tipTxt) {
+      if (prog.tip) { tipTxt.textContent = prog.tip; tip.classList.remove('hidden'); }
+      else tip.classList.add('hidden');
+    }
+  }
 
-const homeAiBtn = document.getElementById('btn-ai-gen');
-if (homeAiBtn) homeAiBtn.addEventListener('click', openAiProgramModal);
+  function saveAndGetProg() {
+    if (!aiProgram) return null;
+    const prog = {
+      id: 'ai-' + Date.now(),
+      name: aiProgram.name,
+      desc: aiProgram.desc,
+      musicLink: '',
+      isTemplate: false,
+      exercises: aiProgram.exercises,
+    };
+    const custom = Storage.get('programs', []);
+    custom.push(prog);
+    saveCustomPrograms(custom);
+
+    // Hoca programına bugünün gününe ekle
+    try {
+      const plan = getActivePlan();
+      if (plan) {
+        const dow = (new Date().getDay() + 6) % 7;
+        const wk = plan.type === 'monthly' ? getCurrentCoachWeek(plan) : 0;
+        const dk = 'w' + wk + 'd' + dow;
+        if (!plan.days) plan.days = {};
+        const day = plan.days[dk] || {};
+        const coachExs = aiProgram.exercises.map(ex => ({
+          name: ex.name, sets: ex.sets, reps: String(ex.reps),
+          weight: ex.weight ? String(ex.weight) : '', rest: ex.rest || 60, note: ex.notes || ''
+        }));
+        plan.days[dk] = {
+          ...day,
+          exercises: [...(day.exercises || []), ...coachExs],
+          note: (day.note ? day.note + '\n' : '') + '🤖 ' + aiProgram.name,
+        };
+        const plans = getCoachPlans();
+        const pi = plans.findIndex(p => p.id === plan.id);
+        if (pi >= 0) { plans[pi] = plan; saveCoachPlans(plans); }
+        showToast('📋 Hoca programına da eklendi!', 'success');
+      }
+    } catch(e) { console.log(e); }
+
+    return prog;
+  }
+
+  // Event listeners - hepsi document üzerinde delegated
+  document.addEventListener('click', function(e) {
+    const t = e.target;
+
+    // Ana sayfa aç butonu
+    if (t.id === 'ai-open-btn' || t.closest('#ai-open-btn')) {
+      openModal(); return;
+    }
+
+    // Chip seç
+    const chip = t.closest('.ai-chip');
+    if (chip) {
+      document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      const ta = document.getElementById('ai-prompt-input');
+      if (ta) { ta.value = chip.dataset.val || ''; updateCount(); }
+      return;
+    }
+
+    // Gelişmiş toggle
+    if (t.id === 'ai-adv-toggle' || t.closest('#ai-adv-toggle')) {
+      const p = document.getElementById('ai-adv-panel');
+      if (!p) return;
+      p.classList.toggle('open');
+      const tog = document.getElementById('ai-adv-toggle');
+      if (tog) tog.textContent = p.classList.contains('open') ? '⬆️ Gizle' : '⚙️ Gelişmiş seçenekler';
+      return;
+    }
+
+    // Oluştur
+    if (t.id === 'ai-gen-btn' || t.closest('#ai-gen-btn')) {
+      generate(false); return;
+    }
+
+    // Yeniden oluştur
+    if (t.id === 'ai-btn-regen' || t.closest('#ai-btn-regen')) {
+      generate(true); return;
+    }
+
+    // Geri
+    if (t.id === 'ai-btn-back' || t.closest('#ai-btn-back')) {
+      show('input'); return;
+    }
+
+    // Kaydet ve başlat
+    if (t.id === 'ai-btn-start' || t.closest('#ai-btn-start')) {
+      const p = saveAndGetProg();
+      if (!p) return;
+      closeAiModal(); show('input');
+      setTimeout(() => startWorkout(p), 250);
+      return;
+    }
+
+    // Sadece kaydet
+    if (t.id === 'ai-btn-save' || t.closest('#ai-btn-save')) {
+      const p = saveAndGetProg();
+      if (!p) return;
+      closeAiModal(); show('input');
+      showScreen('programs'); renderPrograms();
+      showToast('✅ Program kaydedildi');
+      return;
+    }
+
+    // Backdrop kapat
+    if (t.id === 'modal-ai-program') {
+      closeAiModal(); show('input'); return;
+    }
+  });
+
+  // Textarea input
+  document.addEventListener('input', function(e) {
+    if (e.target.id === 'ai-prompt-input') updateCount();
+  });
+
+})(); // IIFE - tüm değişkenler izole
 
 </script>
-<!-- AI PROGRAM GENERATOR MODAL HTML --><div class="modal-backdrop" id="modal-ai-program">
-  <div class="modal" id="modal-ai-program-inner" style="padding-bottom:40px">
+
+<!-- ===== AI PROGRAM GENERATOR MODAL ===== -->
+<div class="modal-backdrop" id="modal-ai-program">
+  <div class="modal" style="padding-bottom:40px">
     <div class="modal-handle"></div>
-    
-    <!-- Input phase -->
-    <div id="ai-phase-input">
-      <div class="modal-title" style="background:linear-gradient(90deg,var(--accent),#8b85ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-        🤖 AI Program
+
+    <!-- INPUT -->
+    <div id="ai-input-wrap">
+      <div class="modal-title" style="background:linear-gradient(90deg,var(--accent),#8b85ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">🤖 AI Program</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Ne yapmak istediğini söyle — sana özel program oluşturayım.</p>
+      <div class="ai-quick-chips">
+        <div class="ai-chip" data-val="Bugün üst vücut çalışacağım">💪 Üst Vücut</div>
+        <div class="ai-chip" data-val="Bugün alt vücut leg day yapmak istiyorum">🦵 Alt Vücut</div>
+        <div class="ai-chip" data-val="Push antrenmanı istiyorum göğüs omuz tricep">⬆️ Push</div>
+        <div class="ai-chip" data-val="Pull antrenmanı yap sırt ve bicep">⬇️ Pull</div>
+        <div class="ai-chip" data-val="Full body antrenman oluştur">🔄 Full Body</div>
+        <div class="ai-chip" data-val="Omuz ve kol günü istiyorum">🙆 Omuz+Kol</div>
+        <div class="ai-chip" data-val="Kardiyo ve core antrenmanı">❤️ Kardiyo+Core</div>
+        <div class="ai-chip" data-val="Evde ekipmansız antrenman">🏠 Evde</div>
       </div>
-
-      <p style="font-size:13px;color:var(--text2);margin-bottom:16px">
-        Ne yapmak istediğini söyle — sana özel program oluşturayım.
-      </p>
-
-      <!-- Quick chips -->
-      <div class="ai-quick-chips" id="ai-quick-chips">
-        <div class="ai-chip" data-text="Bugün üst vücut çalışacağım">💪 Üst Vücut</div>
-        <div class="ai-chip" data-text="Bugün alt vücut leg day yapmak istiyorum">🦵 Alt Vücut</div>
-        <div class="ai-chip" data-text="Push (göğüs omuz tricep) antrenmanı istiyorum">⬆️ Push</div>
-        <div class="ai-chip" data-text="Pull (sırt bicep) antrenmanı yap">⬇️ Pull</div>
-        <div class="ai-chip" data-text="Full body antrenman oluştur">🔄 Full Body</div>
-        <div class="ai-chip" data-text="Omuz ve kol günü istiyorum">🙆 Omuz+Kol</div>
-        <div class="ai-chip" data-text="Kardiyo ve core antrenmanı">❤️ Kardiyo+Core</div>
-        <div class="ai-chip" data-text="Evde ekipmansız antrenman">🏠 Evde</div>
-      </div>
-
-      <!-- Text input -->
       <div class="ai-input-area">
-        <textarea id="ai-user-prompt" placeholder="Örnek: Bugün üst vücut çalışacağım, orta seviye yoğunluk, 60 dakika hedefim..."></textarea>
-        <div style="font-size:11px;color:var(--text3);text-align:right;margin-top:4px" id="ai-char-count">0 / 300</div>
+        <textarea id="ai-prompt-input" placeholder="Örnek: Bugün üst vücut çalışacağım, 60 dakika, orta seviye..."></textarea>
+        <div class="ai-char-count" id="ai-char-ct">0 / 300</div>
       </div>
-
-      <!-- Advanced options toggle -->
-      <div class="ai-advanced-toggle" id="ai-advanced-toggle">⚙️ Gelişmiş seçenekler</div>
-      <div class="ai-advanced-panel" id="ai-advanced-panel">
+      <span class="ai-adv-toggle" id="ai-adv-toggle">⚙️ Gelişmiş seçenekler</span>
+      <div class="ai-adv-panel" id="ai-adv-panel">
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Süre</label>
-            <select class="form-input" id="ai-opt-duration">
+            <select class="form-input" id="ai-dur">
               <option value="30">30 dk</option>
               <option value="45">45 dk</option>
               <option value="60" selected>60 dk</option>
@@ -4855,7 +4906,7 @@ if (homeAiBtn) homeAiBtn.addEventListener('click', openAiProgramModal);
           </div>
           <div class="form-group">
             <label class="form-label">Seviye</label>
-            <select class="form-input" id="ai-opt-level">
+            <select class="form-input" id="ai-lvl">
               <option value="başlangıç">Başlangıç</option>
               <option value="orta" selected>Orta</option>
               <option value="ileri">İleri</option>
@@ -4865,16 +4916,15 @@ if (homeAiBtn) homeAiBtn.addEventListener('click', openAiProgramModal);
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Ekipman</label>
-            <select class="form-input" id="ai-opt-equipment">
+            <select class="form-input" id="ai-equip">
               <option value="tam donanımlı spor salonu" selected>Spor Salonu</option>
-              <option value="dumbbell ve barbell">Dumbbell+Barbell</option>
-              <option value="sadece dumbbell">Sadece Dumbbell</option>
+              <option value="sadece dumbbell">Dumbbell</option>
               <option value="ekipmansız vücut ağırlığı">Ekipmansız</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Set sayısı</label>
-            <select class="form-input" id="ai-opt-sets">
+            <label class="form-label">Set</label>
+            <select class="form-input" id="ai-sets">
               <option value="3">3 set</option>
               <option value="4" selected>4 set</option>
               <option value="5">5 set</option>
@@ -4882,59 +4932,40 @@ if (homeAiBtn) homeAiBtn.addEventListener('click', openAiProgramModal);
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Özel not (ağrı, kısıt vs.)</label>
-          <input type="text" class="form-input" id="ai-opt-note" placeholder="Sağ omzum ağrıyor, bench press yapamam...">
+          <label class="form-label">Özel not</label>
+          <input type="text" class="form-input" id="ai-note" placeholder="Sağ omzum ağrıyor...">
         </div>
       </div>
-
-      <button class="ai-generate-btn" id="btn-ai-generate">
-        ✨ PROGRAM OLUŞTUR
-      </button>
+      <button class="ai-gen-btn" id="ai-gen-btn">✨ PROGRAM OLUŞTUR</button>
     </div>
 
-    <!-- Loading phase -->
-    <div class="ai-loading" id="ai-phase-loading">
-      <div class="ai-loading-spinner"></div>
-      <div class="ai-loading-msg" id="ai-loading-msg">Program oluşturuluyor...</div>
-      <p id="ai-loading-sub">Kaslarını analiz ediyorum 💪</p>
+    <!-- LOADING -->
+    <div class="ai-spinner-wrap" id="ai-loading-wrap">
+      <div class="ai-spinner"></div>
+      <div class="ai-spinner-msg" id="ai-load-msg">Program oluşturuluyor...</div>
+      <div class="ai-spinner-sub" id="ai-load-sub">Kaslarını analiz ediyorum 💪</div>
     </div>
 
-    <!-- Error -->
-    <div class="ai-error" id="ai-error">
-      ❌ <span id="ai-error-msg">Bir hata oluştu. Tekrar dene.</span>
-    </div>
+    <!-- ERROR -->
+    <div class="ai-error-box" id="ai-err-box">❌ <span id="ai-err-txt">Bir hata oluştu.</span></div>
 
-    <!-- Result phase -->
-    <div class="ai-result" id="ai-phase-result">
-      <div class="ai-result-header">
-        <div class="prog-icon" id="ai-result-icon">💪</div>
+    <!-- RESULT -->
+    <div class="ai-result-wrap" id="ai-result-wrap">
+      <div class="ai-result-head">
+        <div style="font-size:36px" id="ai-res-icon">💪</div>
         <div>
-          <h2 id="ai-result-name">Program</h2>
-          <p id="ai-result-desc">-</p>
+          <h2 id="ai-res-name">-</h2>
+          <p id="ai-res-desc">-</p>
         </div>
       </div>
-
-      <div class="ai-result-meta" id="ai-result-meta"></div>
-
-      <div id="ai-exercises-list"></div>
-
-      <div class="ai-tip-box hidden" id="ai-tip-box">
-        <strong>💡 Hoca Notu:</strong> <span id="ai-tip-text"></span>
-      </div>
-
+      <div class="ai-result-meta" id="ai-res-meta"></div>
+      <div id="ai-ex-list"></div>
+      <div class="ai-tip hidden" id="ai-tip-box"><strong>💡 Hoca Notu:</strong> <span id="ai-tip-txt"></span></div>
       <div class="ai-action-btns">
-        <button class="btn btn-primary" id="btn-ai-save-start">
-          ▶ Programı Kaydet ve Başlat
-        </button>
-        <button class="btn btn-ghost" id="btn-ai-save-only">
-          💾 Sadece Kaydet
-        </button>
-        <button class="btn btn-ghost" id="btn-ai-regenerate">
-          🔄 Yeniden Oluştur
-        </button>
-        <button class="btn btn-ghost" style="color:var(--text3)" id="btn-ai-back">
-          ← Geri
-        </button>
+        <button class="btn btn-primary" id="ai-btn-start">▶ Kaydet ve Başlat</button>
+        <button class="btn btn-ghost" id="ai-btn-save">💾 Sadece Kaydet</button>
+        <button class="btn btn-ghost" id="ai-btn-regen">🔄 Yeniden Oluştur</button>
+        <button class="btn btn-ghost" style="color:var(--text3)" id="ai-btn-back">← Geri</button>
       </div>
     </div>
 
