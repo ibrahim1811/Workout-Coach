@@ -989,6 +989,37 @@ input:checked + .toggle-slider::before { transform:translateX(22px); }
   animation: cursor-blink 0.8s infinite;
   margin-left: 2px;
 }
+
+/* AI Modal fixes */
+#modal-ai-program {
+  z-index: 400 !important;
+}
+#modal-ai-program .modal {
+  pointer-events: all !important;
+  position: relative;
+  z-index: 401 !important;
+}
+#modal-ai-program .modal * {
+  pointer-events: all !important;
+}
+.ai-chip {
+  cursor: pointer !important;
+  pointer-events: all !important;
+  -webkit-tap-highlight-color: rgba(108,99,255,0.3);
+  user-select: none;
+}
+.ai-generate-btn {
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+#ai-advanced-toggle {
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+#ai-user-prompt {
+  pointer-events: all !important;
+}
+
 </style>
 </style>
 </head>
@@ -2266,6 +2297,14 @@ document.querySelectorAll('.modal-backdrop').forEach(bd=>{
   bd.addEventListener('click', e => {
     if (e.target===bd) closeAllModals();
   });
+});
+// AI modal backdrop close
+document.addEventListener('click', function(e) {
+  const aiModal = document.getElementById('modal-ai-program');
+  if (aiModal && e.target === aiModal) {
+    aiModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 });
 
 function showScreen(id) {
@@ -4486,13 +4525,14 @@ if ('serviceWorker' in navigator) {
 const AI_WORKER_URL = 'https://workout-coach.ibrahimkayracetin2008.workers.dev';
 
 // Quick chips
-document.querySelectorAll('.ai-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
-    chip.classList.add('selected');
-    document.getElementById('ai-user-prompt').value = chip.dataset.text;
-    updateAiCharCount();
-  });
+// AI chip delegated event listener
+document.addEventListener('click', function(e) {
+  const chip = e.target.closest('.ai-chip');
+  if (!chip) return;
+  document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
+  chip.classList.add('selected');
+  const ta = document.getElementById('ai-user-prompt');
+  if (ta) { ta.value = chip.dataset.text || ''; updateAiCharCount(); }
 });
 
 document.getElementById('ai-user-prompt').addEventListener('input', () => {
@@ -4507,11 +4547,13 @@ function updateAiCharCount() {
   if (count > 300) document.getElementById('ai-user-prompt').value = val.slice(0, 300);
 }
 
-document.getElementById('ai-advanced-toggle').addEventListener('click', () => {
+document.addEventListener('click', function(e) {
+  if (e.target.id !== 'ai-advanced-toggle' && !e.target.closest('#ai-advanced-toggle')) return;
   const panel = document.getElementById('ai-advanced-panel');
+  if (!panel) return;
   panel.classList.toggle('open');
-  document.getElementById('ai-advanced-toggle').textContent =
-    panel.classList.contains('open') ? '⬆️ Gelişmiş seçenekleri gizle' : '⚙️ Gelişmiş seçenekler';
+  const tog = document.getElementById('ai-advanced-toggle');
+  if (tog) tog.textContent = panel.classList.contains('open') ? '⬆️ Gelişmiş seçenekleri gizle' : '⚙️ Gelişmiş seçenekler';
 });
 
 const AI_LOADING_MSGS = [
@@ -4546,8 +4588,27 @@ function showAiPhase(phase) {
 let generatedProgram = null;
 let lastPrompt = '';
 
-document.getElementById('btn-ai-generate').addEventListener('click', () => generateAiProgram());
-document.getElementById('btn-ai-regenerate').addEventListener('click', () => generateAiProgram(true));
+document.addEventListener('click', function(e) {
+  if (e.target.id === 'btn-ai-generate' || e.target.closest('#btn-ai-generate')) generateAiProgram();
+  if (e.target.id === 'btn-ai-regenerate' || e.target.closest('#btn-ai-regenerate')) generateAiProgram(true);
+  if (e.target.id === 'btn-ai-back' || e.target.closest('#btn-ai-back')) showAiPhase('input');
+  if (e.target.id === 'btn-ai-save-start' || e.target.closest('#btn-ai-save-start')) {
+    if (!generatedProgram) return;
+    const saved = saveGeneratedProgram();
+    document.getElementById('modal-ai-program').classList.remove('active');
+    showAiPhase('input');
+    setTimeout(() => startWorkout(saved), 200);
+  }
+  if (e.target.id === 'btn-ai-save-only' || e.target.closest('#btn-ai-save-only')) {
+    if (!generatedProgram) return;
+    saveGeneratedProgram();
+    document.getElementById('modal-ai-program').classList.remove('active');
+    showAiPhase('input');
+    showScreen('programs');
+    renderPrograms();
+    showToast('✅ Program kaydedildi');
+  }
+});
 
 async function generateAiProgram(isRegen = false) {
   const userText = document.getElementById('ai-user-prompt').value.trim();
@@ -4738,7 +4799,9 @@ function openAiProgramModal() {
   document.getElementById('ai-user-prompt').value = '';
   document.querySelectorAll('.ai-chip').forEach(c => c.classList.remove('selected'));
   updateAiCharCount();
-  openModal('modal-ai-program');
+  // Direct open without body overflow lock to prevent pointer-events issues
+  const modalEl = document.getElementById('modal-ai-program');
+  modalEl.classList.add('active');
 }
 
 const homeAiBtn = document.getElementById('btn-ai-gen');
